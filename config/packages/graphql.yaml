@@ -1,0 +1,22 @@
+overblog_graphql:
+    definitions:
+        schema:
+            api:
+                query: Query
+                mutation: RootMutation
+            public:
+                query: PublicQuery
+                mutation: PublicMutation
+                types: [MutationResult]
+        mappings:
+            auto_discover: true
+            types:
+                -   type: yaml
+                    dir: "%kernel.project_dir%/config/graphql/types"
+                    suffix: null
+                -   type: attribute
+                    dir: "%kernel.project_dir%/src/Entity"
+                    suffix: ~
+                -   type: attribute
+                    dir: "%kernel.project_dir%/src/Graphql"
+                    suffix: ~

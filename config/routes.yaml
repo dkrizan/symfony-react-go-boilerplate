@@ -1,0 +1,9 @@
+api:
+    path: /graphql
+    methods: [POST]
+
+api_login_check:
+    path: /login
+
+api_token_logout:
+    path: /graphql/api/invalidate_token

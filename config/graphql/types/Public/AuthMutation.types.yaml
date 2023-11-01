@@ -1,0 +1,15 @@
+AuthMutation:
+  type: object
+  config:
+    fields:
+      requestPasswordReset:
+        type: MutationResult!
+        resolve: "@=mutation('requestPasswordReset', args['email'])"
+        args:
+          email: String!
+      resetPassword:
+        type: MutationResult!
+        resolve: "@=mutation('resetPassword', args['token'], args['password'])"
+        args:
+          token: { type: String! }
+          password: { type: String! }

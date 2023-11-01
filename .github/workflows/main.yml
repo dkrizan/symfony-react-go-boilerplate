@@ -1,0 +1,87 @@
+name: Build & Deploy API and APP
+on:
+  push:
+    branches:
+      - devel
+
+jobs:
+  build-api:
+    name: 👷 Build api
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+      - name: Deploy
+        uses: deployphp/action@v1
+        with:
+          private-key: ${{ secrets.PRIVATE_SSH_KEY }}
+          known-hosts: ${{ secrets.KNOWN_HOSTS }}
+          deployer-version: "7.0.0"
+          dep: deploy ${{ secrets.API_HOST_NAME }}
+
+  build-app:
+    name: 👷 Build app
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./app
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Install dependencies
+        run: npm install
+      - name: Build react app
+        run: CI=false npm run build
+      - name: Store build folder to artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-build
+          path: ./app/build
+
+  deploy-api:
+    name: 🚀 Deploy api
+    runs-on: ubuntu-latest
+    needs:
+      - build-api
+      - build-app
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+      - name: Commit release
+        uses: deployphp/action@v1
+        with:
+          private-key: ${{ secrets.PRIVATE_SSH_KEY }}
+          known-hosts: ${{ secrets.KNOWN_HOSTS }}
+          deployer-version: "7.0.0"
+          dep: commit ${{ secrets.DEPLOYER_HOST_NAME }}
+
+  deploy-app:
+    name: 🚀 Deploy app
+    runs-on: ubuntu-latest
+    needs:
+      - build-app
+      - build-api
+      - deploy-api
+    defaults:
+      run:
+        working-directory: ./app
+    steps:
+      - name: 🚐 Download app build
+        uses: actions/download-artifact@v3
+        with:
+          name: app-build
+      - name: 📂 Upload files
+        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        with:
+          server: ${{ secrets.APP_HOST }}
+          username: ${{ secrets.APP_HOST_USERNAME }}
+          password: ${{ secrets.APP_HOST_PASSWORD }}
+          server-dir: ${{ secrets.APP_HOST_PATH }}

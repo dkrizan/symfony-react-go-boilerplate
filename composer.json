@@ -1,0 +1,99 @@
+{
+    "name": "dkrizan/symfony-react-go-boilerplate",
+    "description": "Just a boilerplate using Symfony 6, React 18 and Go.",
+    "type": "project",
+    "license": "proprietary",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=8.2",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "composer/package-versions-deprecated": "^1.11.99.5",
+        "doctrine/doctrine-bundle": "^2.8",
+        "doctrine/doctrine-migrations-bundle": "^3.2.0",
+        "doctrine/orm": "^2.14",
+        "gesdinet/jwt-refresh-token-bundle": "^1.1",
+        "gpslab/geoip2": "^2.0",
+        "lexik/jwt-authentication-bundle": "^2.14.0",
+        "nelmio/cors-bundle": "^2.2",
+        "overblog/graphql-bundle": "^1.0.0",
+        "sentry/sentry-symfony": "^4.12",
+        "symfony/console": "^6.0.0",
+        "symfony/dotenv": "^6.0.0",
+        "symfony/flex": "^2.2.2",
+        "symfony/form": "^6.0.0",
+        "symfony/framework-bundle": "^6.0.0",
+        "symfony/http-client": "^6.0.0",
+        "symfony/mailer": "^6.0.0",
+        "symfony/mailjet-mailer": "^6.0.0",
+        "symfony/monolog-bundle": "^3.8",
+        "symfony/proxy-manager-bridge": "^6.0.0",
+        "symfony/psr-http-message-bridge": "^2.3",
+        "symfony/twig-bundle": "^6.0.0",
+        "symfony/uid": "^6.0.0",
+        "symfony/validator": "^6.0.0",
+        "symfony/yaml": "^6.0.0",
+        "symfonycasts/reset-password-bundle": "^1.16"
+    },
+    "require-dev": {
+        "ext-json": "*",
+        "codeception/module-asserts": "^3.0",
+        "codeception/module-doctrine2": "^3.0",
+        "codeception/module-symfony": "^3.0",
+        "deployer/deployer": "^7.0",
+        "symfony/browser-kit": "^6.0.0",
+        "symfony/maker-bundle": "^v1.36.2",
+        "symfony/phpunit-bridge": "^6.0.0",
+        "symfony/stopwatch": "^6.0.0",
+        "symfony/web-profiler-bundle": "^6.0.0"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true,
+        "allow-plugins": {
+            "symfony/flex": true,
+            "php-http/discovery": true
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\": "tests/"
+        }
+    },
+    "replace": {
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php72": "*"
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "geoip2:update": "symfony-cmd"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ]
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "require": "^6.0.0"
+        }
+    }
+}

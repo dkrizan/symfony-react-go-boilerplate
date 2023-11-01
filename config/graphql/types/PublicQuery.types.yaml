@@ -1,0 +1,4 @@
+PublicQuery:
+  type: object
+  inherits:
+    - AuthQuery

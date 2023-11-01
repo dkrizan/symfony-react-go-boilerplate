@@ -1,0 +1,12 @@
+Mutation:
+  type: object
+  inherits:
+    - UserMutations
+
+MutationResult:
+  type: object
+  config:
+    fields:
+      success: { type: Boolean! }
+      message: { type: String }
+      code: { type: String }

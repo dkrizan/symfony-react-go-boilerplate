@@ -1,0 +1,58 @@
+version: "3.9"
+services:
+  api:
+    build:
+      context: .
+      target: dev
+    volumes:
+      - .:/var/www/html
+      - ./build/run-local.sh:/usr/local/bin/init.sh
+    command: /bin/sh -c "/usr/local/bin/init.sh"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    links:
+      - db
+      - mailer
+    environment:
+      - VIRTUAL_HOST=${API_DOMAIN}
+
+  db:
+    image: postgres:14.2
+    ports:
+      - "45432:5432"
+    volumes:
+      - .:/var/www/html
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=main
+
+  app:
+    build:
+      context: ./app/
+      target: base
+    stdin_open: true
+    volumes:
+      - ./app:/app
+      - ./build/run-app-local.sh:/usr/local/bin/run-app.sh
+    command: /bin/sh -c "/usr/local/bin/run-app.sh"
+    environment:
+      - VIRTUAL_HOST=${APP_DOMAIN}
+      - REACT_APP_API_URL=http://${API_DOMAIN}
+      - REACT_APP_GRAPHQL_API_URL=http://${API_DOMAIN}/graphql/api
+      - REACT_APP_GRAPHQL_PUBLIC_API_URL=http://${API_DOMAIN}/graphql/public
+      - REACT_APP_DOMAIN=${DOMAIN}
+      - REACT_APP_HTTP_SCHEME=${HTTP_SCHEME}
+
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy
+    ports:
+      - '80:80'
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  mailer:
+    image: schickling/mailcatcher
+    ports:
+      - '1025'
+      - '1080:1080'

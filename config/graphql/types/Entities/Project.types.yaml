@@ -1,0 +1,19 @@
+CreateProjectInput:
+    type: input-object
+    config:
+        fields:
+            name:
+                type: String!
+            description:
+                type: String
+
+UpdateProjectInput:
+    type: input-object
+    config:
+        fields:
+            id:
+                type: String!
+            name:
+                type: String
+            description:
+                type: String

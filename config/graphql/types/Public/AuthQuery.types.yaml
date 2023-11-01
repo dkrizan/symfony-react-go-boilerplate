@@ -1,0 +1,9 @@
+AuthQuery:
+  type: object
+  config:
+    fields:
+      checkPasswordResetToken:
+        type: Boolean!
+        args:
+          token: { type: String! }
+        resolve: '@=query("checkPasswordResetToken", args["token"])'

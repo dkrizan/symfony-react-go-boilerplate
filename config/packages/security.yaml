@@ -1,0 +1,44 @@
+security:
+
+    password_hashers:
+        App\Entity\User: 'auto'
+
+    providers:
+        user_provider:
+            entity:
+                class: App\Entity\User
+                property: login
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        login:
+            pattern: ^/login
+            stateless: false
+            form_login:
+                check_path: /login
+                username_parameter: username
+                password_parameter: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+        api:
+            pattern: ^/graphql/api
+            stateless: true
+            jwt: true
+            entry_point: jwt
+            refresh_jwt:
+                check_path: /graphql/api/refresh_token
+            logout:
+                path: api_token_logout
+
+        public:
+            pattern: ^/graphql/public
+            security: false
+
+    access_control:
+        - { path: ^/graphql, roles: ROLE_USER }
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/signup, roles: IS_AUTHENTICATED_ANONYMOUSLY }

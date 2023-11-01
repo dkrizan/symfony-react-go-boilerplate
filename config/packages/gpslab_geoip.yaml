@@ -1,0 +1,12 @@
+# Read the README file for more detailed configuration information
+# https://github.com/gpslab/geoip2
+gpslab_geoip:
+    databases:
+        default:
+            license: '%env(GEOIP_LICENSE_KEY)%'
+            edition: 'GeoLite2-Country'
+            path: '%kernel.project_dir%/var/GeoLite2-Country.mmdb'
+        city:
+            license: '%env(GEOIP_LICENSE_KEY)%'
+            edition: 'GeoLite2-City'
+            path: '%kernel.project_dir%/var/GeoLite2-City.mmdb'

@@ -1,0 +1,26 @@
+UserMutations:
+  type: object
+  config:
+    fields:
+      changePassword:
+        type: MutationResult!
+        resolve: "@=mutation('changePassword', args['input']['currentPassword'], args['input']['newPassword'])"
+        args:
+          input: { type: ChangePasswordInput!, validation: cascade }
+
+UpdateUserInput:
+  type: input-object
+  config:
+    fields:
+      name: { type: String }
+
+ChangePasswordInput:
+  type: input-object
+  config:
+    fields:
+      currentPassword:
+        type: String!
+      newPassword:
+        type: String!
+        validation:
+          - Length: { min: 8, max: 32 }

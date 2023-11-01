@@ -1,0 +1,59 @@
+import: 
+  - recipe/symfony.php
+
+config:
+  repository: '$DEPLOYER_GIT_REPOSITORY'
+  branch: devel
+  keep_releases: 3
+  dotenv_path: '.env'
+  shared_files:
+    - '.env'
+  clear_paths:
+    - app/
+    - build/
+    - docker/
+    - .env.prod
+    - .env.test
+    - deploy.yaml
+    - docker-compose.yml
+    - Dockerfile
+    - index.html
+    - README.md
+
+hosts:
+  $DEPLOYER_HOST_NAME:
+    remote_user: '$DEPLOYER_REMOTE_USER'
+    deploy_path: '$DEPLOYER_REMOTE_PATH'
+    current_path: 'DEPLOYER_REMOTE_PATH/public_html'
+    http_user: '$DEPLOYER_REMOTE_USER'
+
+tasks:
+  deploy:generate-jwt-keys:
+    - cd: "{{release_path}}"
+    - run: "{{bin/php}} bin/console lexik:jwt:generate-keypair --skip-if-exists"
+
+  # Deploys to release folder
+  deploy:
+    - deploy:unlock
+    - deploy:info
+    - deploy:setup
+    - deploy:lock
+    - deploy:release
+    - deploy:update_code
+    - deploy:shared
+    - deploy:writable
+    - deploy:vendors
+    - deploy:generate-jwt-keys
+    - deploy:clear_paths
+    - deploy:cache:clear
+
+  # Applies/commits last release
+  commit:
+    - database:migrate
+    - deploy:symlink
+    - deploy:unlock
+    - deploy:cleanup
+    - deploy:success
+
+after:
+  deploy:failed: deploy:unlock

@@ -1,0 +1,4 @@
+PublicMutation:
+  type: object
+  inherits:
+    - AuthMutation
