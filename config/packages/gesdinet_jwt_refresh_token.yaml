@@ -8,3 +8,7 @@ gesdinet_jwt_refresh_token:
         http_only: true
         secure: false
         remove_token_from_body: true
+
+when@prod:
+    cookie:
+        secure: true

@@ -12,9 +12,9 @@ use Overblog\GraphQLBundle\Annotation AS GQL;
 class Projects extends BaseObject implements QueryInterface
 {
 
-    #[GQL\Query(name: "project", type: "Project", resolve: "query('App\\\Graphql\\\Api\\\Resolver\\\Projects::project', args['id'], info)")]
+    #[GQL\Query(name: "project", type: "Project")]
     #[GQL\Arg(name: "id", type: "ID!")]
-    public function project(string $id, ResolveInfo $info): Project
+    public function project(string $id): Project
     {
         $repo = $this->em->getRepository(Project::class);
         $qb = $repo->createQueryBuilder('p')

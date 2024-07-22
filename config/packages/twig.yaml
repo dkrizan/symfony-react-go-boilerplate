@@ -1,8 +1,8 @@
 twig:
-    default_path: '%kernel.project_dir%/templates'
+    file_name_pattern: '*.twig'
     globals:
-        app_domain: '%env(APP_DOMAIN)%'
-        http_scheme: '%env(HTTP_SCHEME)%'
+      app_domain: '%env(APP_DOMAIN)%'
+      http_scheme: '%env(HTTP_SCHEME)%'
 
 when@test:
     twig:
