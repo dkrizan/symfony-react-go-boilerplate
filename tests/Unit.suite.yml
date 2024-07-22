@@ -2,10 +2,7 @@
 #
 # Suite for unit or integration tests.
 
-namespace: Test\Helper
 actor: UnitTester
-path: Unit
 modules:
     enabled:
         - Asserts
-        - Test\Helper\Unit

@@ -28,7 +28,7 @@ class AuthMutation extends BaseObject implements MutationInterface, AliasedInter
         private readonly ResetPasswordHelperInterface $resetPasswordHelper,
         private readonly MailerInterface $mailer,
         private readonly UserPasswordHasherInterface $passwordHasher,
-        #[Autowire('%env(NO_REPLY_EMAIL)')] private readonly string $noReplyEmail
+        #[Autowire(env: 'NO_REPLY_EMAIL')] private readonly string $noReplyEmail
     ) {
         parent::__construct($security, $em);
     }

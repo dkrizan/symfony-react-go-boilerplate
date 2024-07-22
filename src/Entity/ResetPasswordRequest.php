@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ResetPasswordRequestRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Uid\UuidV6;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestTrait;
 
@@ -13,10 +15,10 @@ class ResetPasswordRequest implements ResetPasswordRequestInterface
     use ResetPasswordRequestTrait;
 
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
+    #[ORM\Column(type:"uuid", unique:true)]
+    #[ORM\GeneratedValue(strategy:"CUSTOM")]
+    #[ORM\CustomIdGenerator(class:UuidGenerator::class)]
+    private UuidV6 $id;
 
     #[ORM\ManyToOne(targetEntity:User::class)]
     #[ORM\JoinColumn(nullable:false)]

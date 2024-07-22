@@ -114,11 +114,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
         return $this->login;
     }
 
-    public function eraseCredentials()
-    {
-
-    }
-
     public function getUserIdentifier(): string
     {
         return $this->getLogin();
@@ -152,5 +147,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     public function setCountry(string $country): void
     {
         $this->country = $country;
+    }
+
+    public function eraseCredentials(): void
+    {
+        // TODO: Implement eraseCredentials() method.
     }
 }
