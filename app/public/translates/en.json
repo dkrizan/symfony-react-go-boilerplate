@@ -1,0 +1,15 @@
+{
+  "add-project": "Add project",
+  "your-name-was-changed-successfully": "Your name was changed successfully",
+  "you-entered-wrong-password": "You entered wrong password.",
+  "password-changed-successfully": "Password changed successfully",
+  "full-name": "Full name",
+  "current-password": "Current password",
+  "new-password": "New password",
+  "confirm-new-password": "Confirm new password",
+  "save-button": "Save",
+  "change-password-button": "Change password",
+  "delete": "Delete",
+  "get-started": "Get started",
+  "no-projects-yet": "You have no projects yet"
+}

@@ -11,11 +11,13 @@ import {SimpleDropDown} from "../components/Dropdown/SimpleDropDown";
 import {Link} from "react-router-dom";
 import {HealthBadge} from "../components/Badges/HealthBadge";
 import ReactTimeAgo from "react-time-ago";
+import {useTranslation} from "react-i18next";
 
 export function Home() {
 
     const { loading, error, data } = useQuery(PROJECTS);
     const [ addProjectOpen, setAddProjectOpen ] = useState(false);
+    const { t } = useTranslation();
     const [createProject] = useMutation(CREATE_PROJECT, {
         update(cache, { data: { createProject } }) {
             const { projects } = cache.readQuery({query: PROJECTS});
@@ -62,7 +64,7 @@ export function Home() {
                         {data.projects.length === 0
                             ?
                             <div className="text-center mt-12 p-5">
-                                <h3 className="text-4xl font-bold text-gray-600">You have no project yet !</h3>
+                                <h3 className="text-4xl font-bold text-gray-600">{t('no-projects-yet')}</h3>
                                 <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 650 512" className="opacity-70 w-80 mx-auto h-auto">
                                     <path fill="#dbe8ec" d="M568.90415,220.74547V202.55431a13.07945,13.07945,0,0,0-13.07945-13.07945h-46.166a13.07945,13.07945,0,0,1-13.07946-13.07945V158.20424a13.07945,13.07945,0,0,1,13.07946-13.07945h1.45764a13.07945,13.07945,0,0,0,13.07945-13.07945V113.85418a13.07945,13.07945,0,0,0-13.07945-13.07945H169.20918a13.07945,13.07945,0,0,0-13.07945,13.07945v18.19116a13.07945,13.07945,0,0,0,13.07945,13.07945h0a13.07945,13.07945,0,0,1,13.07945,13.07945v18.19117a13.07945,13.07945,0,0,1-13.07945,13.07945H118.6298a13.07945,13.07945,0,0,0-13.07945,13.07945v18.19116a13.07945,13.07945,0,0,0,13.07945,13.07945h19.84658a13.07945,13.07945,0,0,1,13.07945,13.07946v18.19124a13.07945,13.07945,0,0,1-13.07945,13.07946h-.048A13.07945,13.07945,0,0,0,125.349,291.25453V309.4456a13.07945,13.07945,0,0,0,13.07945,13.07946h2.87139a13.07945,13.07945,0,0,1,13.07945,13.07945v18.19125a13.07945,13.07945,0,0,1-13.07945,13.07945H94.1753a13.07945,13.07945,0,0,0-13.07945,13.07945v18.19116A13.07945,13.07945,0,0,0,94.1753,411.22527h423.963a13.07945,13.07945,0,0,0,13.07945-13.07945V379.95466a13.07945,13.07945,0,0,0-13.07945-13.07945H506.79779a13.07945,13.07945,0,0,1-13.07945-13.07945V335.60451a13.07945,13.07945,0,0,1,13.07945-13.07945h26.73986A13.07945,13.07945,0,0,0,546.6171,309.4456V291.25453a13.07945,13.07945,0,0,0-13.07945-13.07945H525.426a13.07945,13.07945,0,0,1-13.07945-13.07946V246.90438A13.07945,13.07945,0,0,1,525.426,233.82492H555.8247A13.07945,13.07945,0,0,0,568.90415,220.74547Z"/>
                                     <rect width="159.84" height="145.44" x="217.561" y="231.797" fill="#409cb5"/>
@@ -72,7 +74,7 @@ export function Home() {
                                     <path fill="#25788e" d="M510.29292,285.1577l-47.93164-53.00043h0v57.96h45.66016A3,3,0,0,0,510.29292,285.1577Z"/>
                                     <path fill="#47acc4" d="M325.66717,290.11729H173.75124a3,3,0,0,1-2.27157-4.9596l45.72154-53.0004h159.84l-49.10248,56.91959A3,3,0,0,1,325.66717,290.11729Z"/>
                                 </svg>
-                                <ActionButton action={() => setAddProjectOpen(true)}>Get started</ActionButton>
+                                <ActionButton action={() => setAddProjectOpen(true)}>{t('get-started')}</ActionButton>
                             </div>
                             :
                             <div className="mt-2">
@@ -89,7 +91,7 @@ export function Home() {
                                                         button={<EllipsisVerticalIcon className="h-7 w-7 stroke-gray-400 stroke-2 hover:stroke-gray-600 rounded-lg"/>}
                                                         right={true}
                                                     >
-                                                        <button onClick={(e) => clickDeleteProject(e, project.id)}>Delete</button>
+                                                        <button onClick={(e) => clickDeleteProject(e, project.id)}>{t('delete')}</button>
                                                     </SimpleDropDown>
                                                 </div>
                                             </div>
@@ -106,13 +108,13 @@ export function Home() {
                                     )}
                                 </div>
                                 <div className="flex justify-center w-full mt-5">
-                                    <ActionButton action={() => setAddProjectOpen(true)}>Add project</ActionButton>
+                                    <ActionButton action={() => setAddProjectOpen(true)}>{t('add-project')}</ActionButton>
                                 </div>
                             </div>
                         }
                     </div>
                 }
-                <Dialog title="Add project" isOpen={addProjectOpen} setIsOpen={setAddProjectOpen}>
+                <Dialog title={t('add-project')} isOpen={addProjectOpen} setIsOpen={setAddProjectOpen}>
                     <ProjectForm submit={submitAddForm} />
                 </Dialog>
             </div>

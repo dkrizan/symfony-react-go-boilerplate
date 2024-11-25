@@ -13,6 +13,8 @@ import './index.css';
 import {AlertsProvider} from "./context/Alerts";
 import {AppSettingsProvider} from "./context/AppSettings";
 import "helpers/timeAgo"
+import {I18nextProvider} from "react-i18next";
+import i18n from './i18n';
 
 Sentry.init({
     dsn: process.env.REACT_APP_SENTRY_DNS,
@@ -28,11 +30,13 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Provider store={store}>
         <AppSettingsProvider>
-            <AlertsProvider>
-                <BrowserRouter>
-                    <App />
-                </BrowserRouter>
-            </AlertsProvider>
+            <I18nextProvider i18n={i18n}>
+                <AlertsProvider>
+                    <BrowserRouter>
+                        <App />
+                    </BrowserRouter>
+                </AlertsProvider>
+            </I18nextProvider>,
         </AppSettingsProvider>
     </Provider>
 );

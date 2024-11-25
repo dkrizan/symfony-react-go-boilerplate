@@ -7,9 +7,10 @@ import {PageHeading} from "../components/Layout/PageHeading";
 import {UPDATE_USER, CHANGE_PASSWORD} from "../graphql/mutations/userMutations";
 import {useContext} from "react";
 import AlertsContext from "../context/Alerts";
+import {useTranslation} from "react-i18next";
 
 export function Profile() {
-
+    const { t } = useTranslation();
     const { register: registerProfile, handleSubmit: handleSubmitProfile, formState: {isSubmitting: isSubmittingProfile} } = useForm();
     const {
         register: registerChangePassword,
@@ -39,7 +40,7 @@ export function Profile() {
 
     function submitEditProfile({name}) {
         return updateUser({ variables: { input: { name: name }}}).then(() => {
-            alerts.success("Your name was changed.");
+            alerts.success(t("your-name-was-changed-successfully"));
         });
     }
 
@@ -49,7 +50,7 @@ export function Profile() {
             if (!data.success) {
                 switch (data.code) {
                     case "INVALID_PASSWORD":
-                        setChangePasswordError('currentPassword', { type: "custom", "message": "You entered wrong password." });
+                        setChangePasswordError('currentPassword', { type: "custom", "message": t("you-entered-wrong-password") });
                         break;
                     default:
                         break;
@@ -57,7 +58,7 @@ export function Profile() {
             } else {
                 clearChangePasswordErrors();
                 resetChangePasswordForm();
-                alerts.success("Password changed successfully.");
+                alerts.success(t("password-changed-successfully"));
             }
         });
     }
@@ -68,9 +69,9 @@ export function Profile() {
             <div className="sm:mx-6 grid grid-cols-4">
                 <form onSubmit={handleSubmitProfile(submitEditProfile)} className="lg:col-span-1 sm:col-span-2 col-span-4">
                     <div className="py-4">
-                        <InputText name="name" label="Full name" register={registerProfile} value={data?.me.name} />
+                        <InputText name="name" label={t('full-name')} register={registerProfile} value={data?.me.name} />
                     </div>
-                    <ActionButton className="px-6" disabled={isSubmittingProfile}>Save</ActionButton>
+                    <ActionButton className="px-6" disabled={isSubmittingProfile}>{t("save-button")}</ActionButton>
                 </form>
             </div>
             <div className="sm:mx-6 mt-6 grid grid-cols-4">
@@ -78,7 +79,7 @@ export function Profile() {
                     <InputText
                         type="password"
                         name="currentPassword"
-                        label="Current password"
+                        label={t("current-password")}
                         register={registerChangePassword}
                         registerOptions={{required: {value: true, message: "Enter current password."}}}
                         error={errorsChangePassword}
@@ -87,7 +88,7 @@ export function Profile() {
                     <InputText
                         type="password"
                         name="newPassword"
-                        label="New password"
+                        label={t("new-password")}
                         register={registerChangePassword}
                         registerOptions={{required: true, minLength: { value: 8, message: "Password must be at least 8 characters long."} }}
                         error={errorsChangePassword}
@@ -95,14 +96,14 @@ export function Profile() {
                     <InputText
                         type="password"
                         name="newPasswordAgain"
-                        label="New password (again)"
+                        label={t("confirm-new-password")}
                         register={registerChangePassword}
                         registerOptions={{ required: true, validate: value => value === getValues("newPassword") || "Passwords does not match." }}
                         error={errorsChangePassword}
                     />
-                    {errorChangePasswordMutation && <div className="text-red-500">Something wrong happened.</div> }
+                    {errorChangePasswordMutation && <div className="text-red-500">{t("something-wrong-happened")}</div> }
                     <div>
-                        <ActionButton className="px-6" disabled={isSubmittingChangePassword}>Change password</ActionButton>
+                        <ActionButton className="px-6" disabled={isSubmittingChangePassword}>{t("change-password-button")}</ActionButton>
                     </div>
                 </form>
             </div>
